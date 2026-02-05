@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Fetch and parse the Polis scouring tracking spreadsheet into structured JSON."""
+"""Fetch and parse the Polis scouring tracking spreadsheet into structured JSON.
+
+Each cell in the spreadsheet records the cumulative total result count from that
+source at the time of a check. A growing count between checks indicates new
+content has appeared — the delta between consecutive checks is what matters for
+prioritization, not the absolute count.
+"""
 
 import csv
 import io
@@ -19,12 +25,15 @@ SPREADSHEET_URL = (
 def parse_cell(raw):
     """Parse a cell value into (count, reviewed).
 
+    Each cell holds a cumulative total result count (not a delta). Counts grow
+    over time as new results appear in that source.
+
     Formats:
       ""          -> (None, False)
-      "564"       -> (564, False)
-      "1,919"     -> (1919, False)
-      "✅ 59"     -> (59, True)
-      "320/1338"  -> (1338, False)   # take second number
+      "564"       -> (564, False)       # cumulative total
+      "1,919"     -> (1919, False)      # cumulative total with comma separator
+      "✅ 59"     -> (59, True)         # reviewed; count is cumulative total
+      "320/1338"  -> (1338, False)      # two numbers; take second as total
     """
     val = raw.strip()
     if not val:

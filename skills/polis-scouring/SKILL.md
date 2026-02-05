@@ -17,6 +17,8 @@ description: >
 
 Periodic scan of ~90 tracked search links to find new mentions of Polis (the computational democracy platform) across the web. The tracking data lives in a public Google Spreadsheet with historical check counts.
 
+Each cell in the spreadsheet records the **cumulative total result count** from that source at the time of a check — not the number of new results. A source is "fruitful" when its count grows significantly between checks (i.e. a large delta), indicating new content has appeared.
+
 ## Workflow
 
 ### Step 1: Fetch and parse the spreadsheet
@@ -36,13 +38,16 @@ Score each row:
 ```
 score = 0.4 * fruitfulness + 0.6 * recency
 
-fruitfulness = avg non-zero count (normalized 0-1 across all rows)
+fruitfulness = avg delta between consecutive checks (normalized 0-1 across all rows)
+               (only include check pairs where both have a count; use absolute deltas)
 recency      = days_since_last_check / max_days (higher = more overdue)
 ```
 
+Fruitfulness measures how much a source's cumulative count tends to *grow* between checks — not how large the count is. A source that regularly gains new results scores higher than one with a large but static count.
+
 Special cases:
 - Never checked → bonus score of 0.8 (establish baseline)
-- Zero delta (count identical to previous) → penalty of -0.2
+- Zero delta on most recent check (count identical to previous) → penalty of -0.2
 
 Group results:
 1. **Automatable, high priority** — will check programmatically
