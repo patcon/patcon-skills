@@ -31,69 +31,52 @@ python3 scripts/fetch_spreadsheet.py
 
 This outputs JSON with each row containing: `source_type`, `keyword`, `url`, `last_checked_date`, `last_count`, `previous_count`, `days_since_last_check`, `total_checks`, `has_ever_been_checked`, and per-date `checks` with `count` and `reviewed` fields.
 
-### Step 2: Prioritize which links to check
+### Step 2: Pick a source type to focus on
 
-Score each row:
+Rather than trying to check everything at once, work through **one source type per session**. Each source has its own quirks — how to read the result count, what the results mean, what counts as a real lead vs. noise, etc.
 
-```
-score = 0.4 * fruitfulness + 0.6 * recency
+Present the user with the distinct source types from the spreadsheet, along with:
+- How many rows of that type exist
+- When they were last checked
+- Whether a checking strategy exists in `references/source-strategies.md`
 
-fruitfulness = avg delta between consecutive checks (normalized 0-1 across all rows)
-               (only include check pairs where both have a count; use absolute deltas)
-recency      = days_since_last_check / max_days (higher = more overdue)
-```
+Let the user pick which source type to work on. If they don't have a preference, suggest one that is overdue or has never been checked.
 
-Fruitfulness measures how much a source's cumulative count tends to *grow* between checks — not how large the count is. A source that regularly gains new results scores higher than one with a large but static count.
+### Step 3: Check that source type
 
-Special cases:
-- Never checked → bonus score of 0.8 (establish baseline)
-- Zero delta on most recent check (count identical to previous) → penalty of -0.2
+For the chosen source type, work through all its rows:
 
-Group results:
-1. **Automatable, high priority** — will check programmatically
-2. **Manual-only, high priority** — recommend user check these
-3. **Lower priority** — mention but don't insist
+1. Show the user the rows for this source type (keyword, URL, last count, last checked date)
+2. Use the strategy from `references/source-strategies.md` if one exists
+3. For each row, report what you find: the current count, the delta from the previous check, and any notable new results
+4. If automated checking fails (API down, CAPTCHA, rate limit), present the URL for the user to check manually
 
-Present the prioritized list to the user and ask which groups to proceed with before checking.
+### Step 4: Calibrate together
 
-### Step 3: Check automatable links
+This is the most important step. After checking each row, discuss the results with the user:
+- **What does the count mean?** Confirm you're reading the right number from the source.
+- **What counts as a real lead?** The user may have context about which results are noise vs. genuinely new mentions of Polis.
+- **What should be recorded?** The user decides whether the count and findings are ready to note.
 
-Use the strategies in `references/source-strategies.md` to check each source type. Work through automatable sources in priority order. Batch similar source types together (e.g. all Internet Archive rows via CDX API).
+The goal is to build up shared understanding of each source type so that future sessions can move faster. Record any source-specific learnings in `references/source-strategies.md`.
 
-### Step 4: Present findings
+### Step 5: Summarize
 
-Use this output format:
+After working through the chosen source type, present a summary:
 
 ```markdown
-# Polis Scouring Report — [DATE]
+## [Source Type] — [DATE]
 
-## Automated Checks
+| Keyword | Previous | Current | Delta | Notes |
+|---------|----------|---------|-------|-------|
+| polis -polish | 66 | 92 | +26 | 26 new stories since last check |
 
-| Source | Keyword | Previous | Current | Delta | Notes |
-|--------|---------|----------|---------|-------|-------|
-| HN Stories | polis -polish | 66 | 72 | +6 | 6 new stories since 2025-02-19 |
+### Notable finds
+- [Any interesting new results worth investigating]
 
-## Significant New Leads (delta > 0)
-- **HN Stories "polis -polish"**: 6 new stories. [Open search](URL) to review.
-
-## Manual Checks Needed (sorted by priority)
-1. **Twitter @UsePolis** (last checked 2025-03-22): [Open](URL)
-2. **LinkedIn "pol.is"** (last checked 2025-04-17): [Open](URL)
-
-## Already Up-to-Date (checked recently, low delta)
-- GitHub: Ruby (last: 2025-05-26, stable at 10)
-
-## Never Checked
-- [Any rows with no historical data]
+### Source-specific notes
+- [Anything learned about how this source works]
 ```
-
-### Step 5: Manual checking round
-
-Present manual-check URLs one at a time. For each, ask the user:
-- The current count they see
-- Whether they want to mark it as reviewed
-
-Record their responses for inclusion in the final summary.
 
 ## Resources
 
