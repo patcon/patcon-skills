@@ -41,6 +41,12 @@ skills/
 
 See the [skill directory layout docs][skills-docs] for details on supporting files, frontmatter options, and more.
 
+## Future skill ideas
+
+Potential skills to extract or create:
+
+- **patcon-interest-assessor** — Encodes patcon's research interests and preferences for evaluating whether a paper, project, or link is worth deeper attention. Includes: keywords to skim for (PCA, clustering, UMAP, dimensional reduction, etc.), what makes something interesting (new math applied to opinion data, datasets, passive/emergent mapping), what's less interesting (papers that critique discrete mechanisms in favor of LLM nuance, papers pushing active consensus-building), and output formats (Roam page template). Currently embedded in `polis-scouring` under "User Preferences" but is general enough to be its own skill, reusable across different scouring/research workflows.
+
 ## Contributing
 
 PRs welcome! To add a skill, create a new directory under `skills/` with a `SKILL.md` file.

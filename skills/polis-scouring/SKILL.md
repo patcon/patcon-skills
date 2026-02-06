@@ -78,6 +78,43 @@ After working through the chosen source type, present a summary:
 - [Anything learned about how this source works]
 ```
 
+## User Preferences
+
+### Evaluating paper relevance (Google Scholar and similar)
+
+**Polis mention tiers:**
+- **High interest**: polis or pol.is appears in the abstract, or appears multiple times in the paper body
+- **Low interest**: only one mention of polis in the full paper
+- **No interest (for "mentions" tracking)**: no mention of polis at all
+
+**Reading strategy:**
+- Always try to read an HTML version of the paper first if available (prefer over PDF)
+- Skim for these keywords: `map`, `mapping`, `agree`, `agreement`, `valence`, `likert`, `PCA`, `dimension`, `dimensional reduction`, `cluster`, `clustering`, `unsupervised` (learning), `UMAP`, `LocalMAP`, `PaCMAP`
+
+**What makes a paper interesting (beyond polis mentions):**
+- Papers about datasets — the user also catalogs datasets
+- New mathematical or statistical methods applied to opinion/deliberation data
+- Work on non-linear dimensionality reduction (PaCMAP, UMAP, etc.)
+- Connections between clustering and proportional representation
+- Concepts around engaged uncertainty, boundary conditions, high-confidence ambivalence ("high confidence grays")
+- The passive/emergent nature of Polis (mapping what people think) is valued — papers that critique Polis as "too simple" or argue systems should actively guide consensus are less interesting
+- Papers that frame Polis's discrete agree/disagree mechanism as a flaw (vs. LLM-based nuance) are less interesting
+
+### Output format for interesting papers (Roam)
+
+When the user flags a paper as interesting, produce a Roam-formatted page:
+
+```
+<paper title> (<publication year>)
+
+- <url>
+- tags: [[Polis]] <other relevant tags as [[Page Links]]> <Author name if notable>
+- abstract
+  - <copied abstract>
+- content
+  - <relevant excerpts, only for high-interest papers — not every paper gets content>
+```
+
 ## Resources
 
 ### scripts/
