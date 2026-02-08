@@ -15,17 +15,28 @@ To learn more:
 
 ## Usage
 
+### Option 1: Plugin Marketplace (Recommended)
+
+Add this repository as a plugin marketplace, then install individual skills:
+
+```sh
+# Add the marketplace (one-time setup)
+/plugin marketplace add patcon/patcon-skills
+
+# List available skills
+/plugin search patcon-skills
+
+# Install specific skills you want
+/plugin install patcon-skills:user-interests
+/plugin install patcon-skills:polis-scouring
+```
+
+### Option 2: Copy Skills Manually
+
 Copy any skill directory into your own project:
 
 ```sh
 cp -r skills/example /path/to/your-project/.claude/skills/example
-```
-
-Or use this repo as a [Claude Code plugin][plugins-docs]:
-
-```sh
-# from your project
-claude plugin add patcon/patcon-skills
 ```
 
 ## Structure
