@@ -1,0 +1,39 @@
+{
+  "name": "patcon-skills",
+  "description": "Patrick's personal skills collection",
+  "plugins": [
+    {
+      "id": "user-interests",
+      "name": "User Interests",
+      "description": "Reference profile of the user's interests and tastes. Consult when evaluating, filtering, or recommending content (news, papers, links, projects).",
+      "version": "1.0.0",
+      "author": "patcon",
+      "source": {
+        "type": "directory",
+        "path": "skills/user-interests"
+      }
+    },
+    {
+      "id": "polis-scouring",
+      "name": "Polis Scouring",
+      "description": "Assist with periodic review of ~90 tracked search links across the web related to the Polis computational democracy platform.",
+      "version": "1.0.0",
+      "author": "patcon",
+      "source": {
+        "type": "directory",
+        "path": "skills/polis-scouring"
+      }
+    },
+    {
+      "id": "example",
+      "name": "Example Skill",
+      "description": "Example skill for demonstration purposes",
+      "version": "1.0.0",
+      "author": "patcon",
+      "source": {
+        "type": "directory",
+        "path": "skills/example"
+      }
+    }
+  ]
+}
